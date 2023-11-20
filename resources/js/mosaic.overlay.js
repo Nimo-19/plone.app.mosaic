@@ -75,6 +75,25 @@ export default class Overlay {
         self.modal.init();
     }
 
+    override_form_keylistener() {
+
+        // Override https://github.com/plone/mockup/blob/d3de042d1af04f8b01337744a2f30f1da409a149/src/pat/modal/modal.js#L442
+
+        $("form", self.modal).off("keydown")
+
+        $("form", self.modal).on("keydown", function (event) {
+            // ignore keys which are not enter, and ignore enter outside form
+            // elements.
+            if (event.code !== 13 || ! ['INPUT','SELECT','BUTTON (?!) '].includes(event.target.nodeName)) {
+                return;
+            }
+            event.preventDefault();
+            $("input[type=submit], button[type=submit], button:not(type)", this)
+                .eq(0)
+                .trigger("click");
+        });
+    }
+
     prepare_autotoc_listener() {
         const self = this;
 
@@ -89,6 +108,7 @@ export default class Overlay {
             tabLinks.forEach(element => {
                 element.addEventListener('click', handler)
             });
+            self.override_form_keylistener()
         }
 
         function removeListeners() {
