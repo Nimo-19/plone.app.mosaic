@@ -98,7 +98,6 @@ export default class Overlay {
         const self = this;
 
         function handler() {
-            console.log('test')
             $(document).off("keydown", `.${self.modal.options.templateOptions.classDialog}`)
             self.modal.activateFocusTrap()
         }
