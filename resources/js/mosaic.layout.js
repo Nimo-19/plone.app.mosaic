@@ -356,7 +356,8 @@ export default class LayoutManager {
                     $(tile).data("mosaic-tile").blur();
                 });
                 // focus new tile
-                var focused_tile = document.activeElement.closest(".mosaic-tile");
+                var focused_tile = document.activeElement.closest(".mosaic-tile:not(:focus-within)");
+
                 if (focused_tile) {
                     $(focused_tile).data("mosaic-tile").focus();
                 }

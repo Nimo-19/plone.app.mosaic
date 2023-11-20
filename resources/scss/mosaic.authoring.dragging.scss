@@ -39,7 +39,8 @@
     line-height: 1;
 }
 
-.mosaic-selected-tile {
+
+.mosaic-selected-tile, .mosaic-tile:focus-within {
     .mosaic-tile-control {
         opacity: 1;
 
@@ -167,8 +168,10 @@
     display: none;
 }
 
-.mosaic-selected-tile .mosaic-tile-control {
-    display: block !important;
+.mosaic-selected-tile, .mosaic-tile:focus-within {
+     .mosaic-tile-control {
+        display: block !important;
+    }
 }
 
 /* Show move icon while hovering over a tile */
