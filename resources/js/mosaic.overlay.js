@@ -44,6 +44,7 @@ export default class Overlay {
             self.properties_edit_url() + " #content-core > form",
         );
         self.$el.addClass("properties-reloaded");
+
     }
 
     initialize() {
@@ -59,6 +60,8 @@ export default class Overlay {
                 reloadWindowOnClose: false,
             },
         });
+
+        self.prepare_autotoc_listener();
         // override modal initialization
         self.modal.on("before-render", (e) => {
             self.before_modal_render();
@@ -70,6 +73,31 @@ export default class Overlay {
             self.load_properties_form();
         })
         self.modal.init();
+    }
+
+    prepare_autotoc_listener() {
+        const self = this;
+
+        function handler() {
+            console.log('test')
+            $(document).off("keydown", `.${self.modal.options.templateOptions.classDialog}`)
+            self.modal.activateFocusTrap()
+        }
+
+        function prepareListener() {
+            const tabLinks = self.modal.$modalContent.find('.autotoc-nav a').toArray()
+            tabLinks.forEach(element => {
+                element.addEventListener('click', handler)
+            });
+        }
+
+        function removeListeners() {
+            const tabLinks = self.modal.$modalContent.find('.autotoc-nav a').toArray()
+            tabLinks.forEach((e) => e.removeEventListener('click', handler))
+        }
+
+        self.modal.on('shown', prepareListener)
+        self.modal.on("hide", removeListeners)
     }
 
     open(mode, tile_config) {
